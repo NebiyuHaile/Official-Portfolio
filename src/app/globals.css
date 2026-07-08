@@ -31,8 +31,56 @@ body {
   color: var(--foreground);
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 45% at 50% -10%, rgba(0, 229, 160, 0.12), transparent 58%),
+    linear-gradient(180deg, rgba(8, 9, 11, 0.2), var(--background) 88%);
+  z-index: -2;
+}
+
 section[id] {
   scroll-margin-top: 4rem;
+}
+
+.star-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.star-field::before,
+.star-field::after {
+  content: "";
+  position: absolute;
+  inset: -20% 0 0;
+  background-repeat: repeat;
+  will-change: transform, opacity;
+}
+
+.star-field::before {
+  opacity: 0.6;
+  background-image:
+    radial-gradient(circle at 12px 18px, rgba(232, 234, 237, 0.72) 1px, transparent 1.6px),
+    radial-gradient(circle at 84px 52px, rgba(0, 229, 160, 0.42) 1px, transparent 1.7px),
+    radial-gradient(circle at 132px 96px, rgba(232, 234, 237, 0.46) 1px, transparent 1.5px);
+  background-size: 170px 150px;
+  animation: star-drift 34s linear infinite;
+}
+
+.star-field::after {
+  opacity: 0.32;
+  background-image:
+    radial-gradient(circle at 40px 28px, rgba(232, 234, 237, 0.62) 1px, transparent 1.5px),
+    radial-gradient(circle at 118px 76px, rgba(232, 234, 237, 0.36) 1px, transparent 1.4px),
+    radial-gradient(circle at 180px 124px, rgba(0, 229, 160, 0.35) 1px, transparent 1.5px);
+  background-size: 230px 190px;
+  animation: star-drift 52s linear infinite reverse;
 }
 
 /* Faint schematic grid backdrop */
@@ -41,7 +89,18 @@ section[id] {
     linear-gradient(to right, var(--border) 1px, transparent 1px),
     linear-gradient(to bottom, var(--border) 1px, transparent 1px);
   background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 36%, transparent 100%);
+  opacity: 0.56;
+}
+
+@keyframes star-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-96px, 120px, 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

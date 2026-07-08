@@ -10,10 +10,11 @@ import TracePanel from "@/components/TracePanel";
 
 export default function Home() {
   return (
-    <main className="relative">
+    <main className="relative overflow-hidden">
+      <div aria-hidden className="star-field" />
       <Nav />
       <TracePanel />
-      <div className="lg:pr-[22rem]">
+      <div className="relative z-10 lg:pr-[22rem]">
         <Hero />
         <About />
         <Experience />
