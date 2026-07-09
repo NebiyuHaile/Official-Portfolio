@@ -15,9 +15,10 @@ export default function TraceManifest() {
             </p>
             <h2>Before the scroll continues, the system declares the route.</h2>
             <p>
-              Recruiters should not have to decode the portfolio. The request
-              path makes the signal explicit: identity, production evidence,
-              systems depth, and a clear reason to start the conversation.
+              I do not want recruiters to decode a wall of portfolio content.
+              This request path makes my signal explicit: identity, production
+              evidence, systems depth, and a clear reason to start the
+              conversation.
             </p>
           </div>
 

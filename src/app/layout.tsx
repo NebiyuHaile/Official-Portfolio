@@ -18,7 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Nebiyu Haile — Backend & AI Systems Engineer",
   description:
-    "Nebiyu Haile is a CS student and backend/AI systems engineer building auth, WebSocket, AI routing, telemetry, and data systems for real users.",
+    "I am Nebiyu Haile, a CS student and backend/AI systems engineer building auth, WebSocket, AI routing, telemetry, and data systems for real users.",
   keywords: [
     "Nebiyu Haile",
     "backend engineer",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Nebiyu Haile — Backend & AI Systems Engineer",
     description:
-      "Backend, AI infrastructure, and full-stack systems work with real users, measurable reliability, and production-minded project proof.",
+      "My backend, AI infrastructure, and full-stack systems work spans real users, measurable reliability, and production-minded project proof.",
     type: "website",
   },
   robots: {

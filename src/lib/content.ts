@@ -22,7 +22,7 @@ export const operatorCommands = [
   {
     command: "whoami",
     response:
-      "Nebiyu Haile — CS student, backend/AI systems engineer, and solo builder of production workflows.",
+      "I am Nebiyu Haile — a CS student, backend/AI systems engineer, and solo builder of production workflows.",
   },
   {
     command: "proof",
@@ -49,33 +49,33 @@ export const traceManifest = [
   {
     step: "01",
     command: "resolve.identity()",
-    label: "Who is this engineer?",
+    label: "Who am I?",
     output:
-      "CS + Math student building backend, AI infrastructure, and full-stack systems for real users.",
+      "I am a CS + Math student building backend, AI infrastructure, and full-stack systems for real users.",
     status: "verified",
   },
   {
     step: "02",
     command: "query.production_history()",
-    label: "Has the work held up?",
+    label: "Has my work held up?",
     output:
-      "500+ users, 99.7% uptime, real-time voting, guarded transactions, and measurable support outcomes.",
+      "I have shipped systems with 500+ users, 99.7% uptime, real-time voting, guarded transactions, and measurable support outcomes.",
     status: "stable",
   },
   {
     step: "03",
     command: "inspect.systems()",
-    label: "What kind of problems?",
+    label: "What problems do I work on?",
     output:
-      "Auth, RBAC, WebSockets, ETL, AI routing, telemetry, healthcare data modeling, and database correctness.",
+      "I work on auth, RBAC, WebSockets, ETL, AI routing, telemetry, healthcare data modeling, and database correctness.",
     status: "deep signal",
   },
   {
     step: "04",
     command: "return.recruiter_signal()",
-    label: "Why reach out?",
+    label: "Why reach out to me?",
     output:
-      "Nebiyu can own ambiguous systems work from data model to deployed product and explain the tradeoffs.",
+      "I can own ambiguous systems work from data model to deployed product and explain the tradeoffs clearly.",
     status: "200 OK",
   },
 ];
@@ -167,9 +167,9 @@ export const about = {
   blurb:
     "I am a systems-minded builder who can take an ambiguous problem from schema design to deployment. My strongest work sits where backend reliability, product constraints, and AI/data systems meet.",
   strengths: [
-    "Owns projects end to end: data model, API design, auth, deployment, and operational feedback loops",
-    "Comfortable debugging across the stack, from concurrent database writes to real-time WebSocket state",
-    "Communicates tradeoffs clearly with technical and non-technical teammates",
+    "I own projects end to end: data model, API design, auth, deployment, and operational feedback loops",
+    "I am comfortable debugging across the stack, from concurrent database writes to real-time WebSocket state",
+    "I communicate tradeoffs clearly with technical and non-technical teammates",
   ],
 };
 

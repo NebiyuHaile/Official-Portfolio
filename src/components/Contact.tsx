@@ -13,11 +13,11 @@ export default function Contact() {
           200 OK · connection open
         </div>
         <h2 className="text-3xl font-semibold tracking-tight text-fg sm:text-5xl">
-          Need a backend engineer who ships?
+          Want to talk systems with me?
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-lg text-fg-muted">
-          {profile.availability}. The fastest way to reach me is email, and I
-          am ready to talk through the systems behind the work above.
+          {profile.availability}. Email is the fastest way to reach me, and I
+          am ready to talk through how I built the systems above.
         </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4 font-mono text-sm">
