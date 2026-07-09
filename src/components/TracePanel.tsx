@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import {
   motion,
   useMotionValueEvent,
@@ -11,6 +11,10 @@ import {
 import { traceSpans, type TraceSpan } from "@/lib/content";
 
 type RangeMap = Record<string, [number, number]>;
+
+const emptySubscribe = () => () => {};
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
 
 function defaultRanges(): RangeMap {
   return Object.fromEntries(traceSpans.map((s) => [s.id, s.range]));
@@ -140,6 +144,11 @@ export default function TracePanel() {
   const { scrollYProgress } = useScroll();
   const [elapsed, setElapsed] = useState("0.00s");
   const [done, setDone] = useState(false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    clientSnapshot,
+    serverSnapshot
+  );
   const ranges = useMeasuredRanges();
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -148,6 +157,8 @@ export default function TracePanel() {
   });
 
   const rows = groupSpans(traceSpans);
+
+  if (!mounted) return null;
 
   return (
     <aside
