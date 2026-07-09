@@ -1,81 +1,120 @@
+"use client";
+
+import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import { projects } from "@/lib/content";
 
 export default function Projects() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const reduceMotion = useReducedMotion();
+  const activeProject = projects[activeIndex];
+
   return (
     <section
       id="projects"
-      className="mx-auto max-w-6xl px-6 py-24 sm:px-10 lg:px-16"
+      className="mx-auto max-w-7xl px-6 py-24 sm:px-10 lg:px-16"
     >
       <Reveal>
-        <SectionHeading index="03" title="Projects" />
-        <p className="mb-10 -mt-6 font-mono text-xs text-fg-muted">
-          fan-out · these three run concurrently in the trace above
+        <SectionHeading index="03" title="Systems Dossiers" />
+        <p className="mb-10 -mt-6 max-w-2xl font-mono text-xs leading-6 text-fg-muted">
+          I do not want the work to sit in normal cards. Each project opens like
+          a production case file: what I owned, what could break, and what I
+          built to make the system hold.
         </p>
       </Reveal>
 
-      <div className="grid gap-6 md:grid-cols-6">
-        {projects.map((project, i) => (
-          <Reveal
-            key={project.id}
-            delay={i * 0.1}
-            className={
-              i === 0
-                ? "md:col-span-4"
-                : i === 1
-                  ? "md:col-span-2 md:pt-14"
-                  : "md:col-span-3 md:col-start-3"
-            }
-          >
-            <a
-              id={project.id}
-              href={project.link}
-              target="_blank"
-              rel="noreferrer"
-              className="group block h-full scroll-mt-16 rounded-lg border border-border bg-bg-elevated/90 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-lg hover:shadow-accent/5"
-            >
-              <div className="flex items-center justify-between font-mono text-xs text-fg-muted">
+      <Reveal>
+        <div className="project-lab">
+          <div className="project-lab__rail" aria-label="Select project dossier">
+            {projects.map((project, index) => (
+              <button
+                id={project.id}
+                key={project.id}
+                type="button"
+                className={`project-tab ${
+                  activeIndex === index ? "project-tab--active" : ""
+                }`}
+                onClick={() => setActiveIndex(index)}
+                aria-pressed={activeIndex === index}
+              >
                 <span>{project.service}</span>
-                <span className="text-accent">{project.attr}</span>
-              </div>
-              <h3
-                className={`mt-3 font-semibold text-fg group-hover:text-accent ${
-                  i === 0 ? "text-3xl sm:text-4xl" : "text-lg"
-                }`}
-              >
-                {project.name}
-              </h3>
-              <p
-                className={`mt-3 text-fg-muted ${
-                  i === 0 ? "text-base sm:text-lg" : "text-sm"
-                }`}
-              >
-                {project.description}
-              </p>
-              <div className="mt-4 rounded-md border border-border/80 bg-bg p-3">
-                <p className="font-mono text-[11px] uppercase tracking-wide text-accent">
-                  recruiter signal
+                <strong>{project.name}</strong>
+                <small>{project.attr}</small>
+              </button>
+            ))}
+          </div>
+
+          <motion.article
+            key={activeProject.id}
+            className="project-dossier"
+            initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="project-dossier__header">
+              <div>
+                <p className="project-dossier__eyebrow">
+                  active dossier · {activeProject.service}
                 </p>
-                <p className="mt-2 text-sm text-fg-muted">{project.impact}</p>
+                <h3>{activeProject.name}</h3>
               </div>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {project.tech.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded border border-border px-2 py-1 font-mono text-[11px] text-fg-muted"
+              <a href={activeProject.link} target="_blank" rel="noreferrer">
+                inspect codebase
+              </a>
+            </div>
+
+            <p className="project-dossier__description">
+              {activeProject.description}
+            </p>
+
+            <div className="project-dossier__grid">
+              <div className="project-dossier__panel project-dossier__panel--large">
+                <span>what I owned</span>
+                <p>{activeProject.role}</p>
+              </div>
+              <div className="project-dossier__panel">
+                <span>failure mode</span>
+                <p>{activeProject.risk}</p>
+              </div>
+              <div className="project-dossier__panel">
+                <span>proof</span>
+                <p>{activeProject.proof}</p>
+              </div>
+            </div>
+
+            <div className="project-architecture">
+              <div className="project-architecture__path" aria-hidden="true">
+                {activeProject.architecture.map((step, index) => (
+                  <motion.div
+                    key={step}
+                    className="project-architecture__node"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                      duration: reduceMotion ? 0 : 0.35,
+                      delay: reduceMotion ? 0 : index * 0.06,
+                    }}
                   >
-                    {t}
-                  </span>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <strong>{step}</strong>
+                  </motion.div>
                 ))}
               </div>
-              <span className="mt-5 inline-block font-mono text-xs text-fg-muted transition-colors group-hover:text-accent">
-                inspect codebase →
-              </span>
-            </a>
-          </Reveal>
-        ))}
-      </div>
+            </div>
+
+            <div className="project-dossier__footer">
+              <p>{activeProject.impact}</p>
+              <div>
+                {activeProject.tech.map((tech) => (
+                  <span key={tech}>{tech}</span>
+                ))}
+              </div>
+            </div>
+          </motion.article>
+        </div>
+      </Reveal>
     </section>
   );
 }

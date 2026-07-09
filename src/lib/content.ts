@@ -232,6 +232,10 @@ export type Project = {
   attr: string;
   description: string;
   impact: string;
+  role: string;
+  proof: string;
+  risk: string;
+  architecture: string[];
   tech: string[];
   link: string;
 };
@@ -245,6 +249,10 @@ export const projects: Project[] = [
     description:
       "AI inference routing service that classifies requests and routes to the optimal LLM backend, with a full telemetry schema and live ops dashboard tracking spend and p95 latency.",
     impact: "Shows production-minded AI engineering: routing decisions, cost visibility, latency tracking, and backend observability.",
+    role: "I designed the routing logic, telemetry schema, and ops-facing dashboard surface.",
+    proof: "Tracks model choice, spend, latency, and routing decisions instead of treating AI calls like a black box.",
+    risk: "The core risk was uncontrolled LLM cost and opaque latency; I treated observability as a product feature.",
+    architecture: ["Prompt intake", "Classifier", "LLM router", "Telemetry store", "Ops dashboard"],
     tech: ["FastAPI", "PostgreSQL", "OpenRouter", "Next.js"],
     link: profile.github,
   },
@@ -256,6 +264,10 @@ export const projects: Project[] = [
     description:
       "Live scoring backend for a 2026 debate competition with transaction guards preventing leaderboard corruption under concurrent writes.",
     impact: "Demonstrates database correctness under pressure, where one bad write can damage public competition results.",
+    role: "I built the scoring flow around transaction safety and leaderboard integrity.",
+    proof: "Concurrent writes are guarded so public rankings stay consistent while judges submit live scores.",
+    risk: "The core risk was leaderboard corruption under pressure; correctness mattered more than visual flash.",
+    architecture: ["Judge input", "Validation", "Transaction guard", "Score aggregation", "Leaderboard"],
     tech: ["Django", "PostgreSQL", "Python"],
     link: profile.github,
   },
@@ -267,6 +279,10 @@ export const projects: Project[] = [
     description:
       "Backend/data layer for a nursing clinical-simulation platform: graph-modeled patient data, role-gated access across 10+ scenarios, zero-regression schema refactor mid-project.",
     impact: "Highlights careful schema evolution, role-based access, and healthcare simulation data modeling.",
+    role: "I worked on the data model, role gates, and schema refactor path for simulation workflows.",
+    proof: "The system supports 10+ scenarios while preserving role-specific access and patient-data relationships.",
+    risk: "The core risk was changing schema shape mid-project without breaking scenario behavior.",
+    architecture: ["Role gate", "Scenario loader", "Patient graph", "Clinical actions", "Audit trail"],
     tech: ["Next.js", "TypeScript", "React"],
     link: profile.github,
   },
