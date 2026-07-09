@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import OperatorTerminal from "@/components/OperatorTerminal";
 import RequestConstellation from "@/components/RequestConstellation";
 import { profile, proofPoints } from "@/lib/content";
 
@@ -139,7 +140,10 @@ export default function Hero() {
           }
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
         >
-          <RequestConstellation />
+          <div className="space-y-4">
+            <RequestConstellation />
+            <OperatorTerminal />
+          </div>
         </motion.div>
       </div>
 

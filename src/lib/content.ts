@@ -18,6 +18,33 @@ export const proofPoints = [
   { value: "30%", label: "faster ticket resolution" },
 ];
 
+export const operatorCommands = [
+  {
+    command: "whoami",
+    response:
+      "Nebiyu Haile — CS student, backend/AI systems engineer, and solo builder of production workflows.",
+  },
+  {
+    command: "proof",
+    response:
+      "500+ users served · 99.7% uptime · 91% model accuracy · 30% faster support resolution.",
+  },
+  {
+    command: "projects",
+    response:
+      "RouteAlpha: AI routing + telemetry · EMDC: concurrent-safe tabulation · SAFEHR: role-gated clinical simulation data.",
+  },
+  {
+    command: "stack",
+    response:
+      "Python · TypeScript · Next.js · FastAPI · Django · PostgreSQL · WebSockets · TensorFlow · Docker.",
+  },
+  {
+    command: "contact",
+    response: "nebiyu.haile@mnsu.edu · linkedin.com/in/nebiyuhaile · github.com/NebiyuHaile",
+  },
+];
+
 export const traceManifest = [
   {
     step: "01",

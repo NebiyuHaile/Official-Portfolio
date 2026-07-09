@@ -89,7 +89,7 @@ section[id] {
 
 .request-console {
   position: relative;
-  min-height: 38rem;
+  min-height: 33rem;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--border), white 8%);
   border-radius: 8px;
@@ -138,7 +138,7 @@ section[id] {
 
 .request-map {
   position: relative;
-  height: 25rem;
+  height: 21rem;
   margin: 0.75rem;
 }
 
@@ -268,6 +268,123 @@ section[id] {
   max-width: 42rem;
   color: var(--foreground-muted);
   line-height: 1.6;
+}
+
+.operator-terminal {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border), white 8%);
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, rgba(15, 17, 20, 0.94), rgba(8, 9, 11, 0.8)),
+    radial-gradient(circle at 92% 20%, rgba(0, 229, 160, 0.1), transparent 32%);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(14px);
+}
+
+.operator-terminal__bar,
+.operator-terminal__form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-mono);
+}
+
+.operator-terminal__bar {
+  border-bottom: 1px solid var(--border);
+  padding: 0.7rem 0.9rem;
+  font-size: 0.68rem;
+  color: var(--foreground-muted);
+}
+
+.operator-terminal__bar span:first-child {
+  color: var(--accent);
+}
+
+.operator-terminal__log {
+  display: grid;
+  gap: 0.65rem;
+  min-height: 9.4rem;
+  padding: 0.9rem;
+}
+
+.operator-terminal__line {
+  display: grid;
+  gap: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: var(--foreground-muted);
+}
+
+.operator-terminal__prompt {
+  color: var(--signal-blue);
+}
+
+.operator-terminal__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  padding: 0 0.9rem 0.9rem;
+}
+
+.operator-terminal__chips button {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.35rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--foreground-muted);
+  background: rgba(8, 9, 11, 0.42);
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    background 160ms ease;
+}
+
+.operator-terminal__chips button:hover,
+.operator-terminal__chips button:focus-visible {
+  border-color: rgba(0, 229, 160, 0.45);
+  color: var(--foreground);
+  background: rgba(0, 229, 160, 0.08);
+  outline: none;
+}
+
+.operator-terminal__form {
+  border-top: 1px solid var(--border);
+  padding: 0.75rem 0.9rem;
+  color: var(--accent);
+}
+
+.operator-terminal__form input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  outline: none;
+}
+
+.operator-terminal__form input::placeholder {
+  color: rgba(139, 146, 156, 0.72);
+}
+
+.operator-terminal__form button {
+  border: 1px solid rgba(0, 229, 160, 0.35);
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  color: var(--accent);
+  background: rgba(0, 229, 160, 0.08);
+  transition:
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.operator-terminal__form button:hover,
+.operator-terminal__form button:focus-visible {
+  transform: translateY(-1px);
+  background: rgba(0, 229, 160, 0.14);
+  outline: none;
 }
 
 .manifest-shell {
@@ -470,6 +587,21 @@ section[id] {
   .request-node:focus-visible,
   .request-node--active {
     transform: none;
+  }
+
+  .operator-terminal__bar,
+  .operator-terminal__form {
+    gap: 0.6rem;
+  }
+
+  .operator-terminal__log {
+    min-height: auto;
+  }
+
+  .operator-terminal__line,
+  .operator-terminal__chips button,
+  .operator-terminal__form {
+    font-size: 0.7rem;
   }
 
   .manifest-grid {
