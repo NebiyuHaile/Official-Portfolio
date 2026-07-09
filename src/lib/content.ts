@@ -18,6 +18,41 @@ export const proofPoints = [
   { value: "30%", label: "faster ticket resolution" },
 ];
 
+export const traceManifest = [
+  {
+    step: "01",
+    command: "resolve.identity()",
+    label: "Who is this engineer?",
+    output:
+      "CS + Math student building backend, AI infrastructure, and full-stack systems for real users.",
+    status: "verified",
+  },
+  {
+    step: "02",
+    command: "query.production_history()",
+    label: "Has the work held up?",
+    output:
+      "500+ users, 99.7% uptime, real-time voting, guarded transactions, and measurable support outcomes.",
+    status: "stable",
+  },
+  {
+    step: "03",
+    command: "inspect.systems()",
+    label: "What kind of problems?",
+    output:
+      "Auth, RBAC, WebSockets, ETL, AI routing, telemetry, healthcare data modeling, and database correctness.",
+    status: "deep signal",
+  },
+  {
+    step: "04",
+    command: "return.recruiter_signal()",
+    label: "Why reach out?",
+    output:
+      "Nebiyu can own ambiguous systems work from data model to deployed product and explain the tradeoffs.",
+    status: "200 OK",
+  },
+];
+
 export type SystemNode = {
   id: string;
   label: string;
@@ -250,14 +285,15 @@ export type TraceSpan = {
 // section boundaries at runtime (see recalibration in TracePanel itself).
 export const traceSpans: TraceSpan[] = [
   { id: "hero", label: "GET /", service: "svc:hero", attr: "handshake", range: [0, 0.12] },
-  { id: "about", label: "auth.middleware", service: "svc:about", attr: "identity=verified", range: [0.12, 0.24] },
-  { id: "experience-mnsu", label: "db.query", service: "svc:mnsu-it", attr: "uptime=99.7%", range: [0.24, 0.32] },
-  { id: "experience-senate", label: "db.query", service: "svc:senate-sync", attr: "users=500+", range: [0.32, 0.4] },
-  { id: "experience-research", label: "db.query", service: "svc:research", attr: "accuracy=91%", range: [0.4, 0.48] },
-  { id: "project-routealpha", label: "call", service: "svc:routealpha", attr: "routing=multi-llm", range: [0.48, 0.68], lane: 0 },
-  { id: "project-emdc", label: "call", service: "svc:emdc", attr: "tx=concurrent-safe", range: [0.48, 0.68], lane: 1 },
-  { id: "project-safehr", label: "call", service: "svc:safehr", attr: "scenarios=10+", range: [0.48, 0.68], lane: 2 },
-  { id: "skills", label: "cache.lookup", service: "svc:skills", attr: "hit", range: [0.68, 0.8] },
-  { id: "activities", label: "emit.event", service: "svc:activities", attr: "fellowships=4", range: [0.8, 0.9] },
+  { id: "manifest", label: "plan", service: "svc:manifest", attr: "route=resolved", range: [0.12, 0.22] },
+  { id: "about", label: "auth.middleware", service: "svc:about", attr: "identity=verified", range: [0.22, 0.32] },
+  { id: "experience-mnsu", label: "db.query", service: "svc:mnsu-it", attr: "uptime=99.7%", range: [0.32, 0.4] },
+  { id: "experience-senate", label: "db.query", service: "svc:senate-sync", attr: "users=500+", range: [0.4, 0.48] },
+  { id: "experience-research", label: "db.query", service: "svc:research", attr: "accuracy=91%", range: [0.48, 0.56] },
+  { id: "project-routealpha", label: "call", service: "svc:routealpha", attr: "routing=multi-llm", range: [0.56, 0.72], lane: 0 },
+  { id: "project-emdc", label: "call", service: "svc:emdc", attr: "tx=concurrent-safe", range: [0.56, 0.72], lane: 1 },
+  { id: "project-safehr", label: "call", service: "svc:safehr", attr: "scenarios=10+", range: [0.56, 0.72], lane: 2 },
+  { id: "skills", label: "cache.lookup", service: "svc:skills", attr: "hit", range: [0.72, 0.82] },
+  { id: "activities", label: "emit.event", service: "svc:activities", attr: "fellowships=4", range: [0.82, 0.9] },
   { id: "contact", label: "response", service: "svc:contact", attr: "200 OK", range: [0.9, 1] },
 ];

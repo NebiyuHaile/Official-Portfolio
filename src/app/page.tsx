@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
+import TraceManifest from "@/components/TraceManifest";
 import About from "@/components/About";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
@@ -16,6 +17,7 @@ export default function Home() {
       <TracePanel />
       <div className="relative z-10 lg:pr-[22rem]">
         <Hero />
+        <TraceManifest />
         <About />
         <Experience />
         <Projects />
