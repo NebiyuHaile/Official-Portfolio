@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useMemo, useState } from "react";
 import {
   motion,
   useMotionValueEvent,
@@ -9,69 +9,6 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { traceSpans, type TraceSpan } from "@/lib/content";
-
-type RangeMap = Record<string, [number, number]>;
-
-const emptySubscribe = () => () => {};
-const clientSnapshot = () => true;
-const serverSnapshot = () => false;
-
-function defaultRanges(): RangeMap {
-  return Object.fromEntries(traceSpans.map((s) => [s.id, s.range]));
-}
-
-// Measures each span's real DOM element so the trace maps to actual content
-// height instead of guessed fractions. A span is "in flight" from just
-// before its element enters the viewport to the moment it fully scrolls
-// past — so the bar fills for roughly as long as that content is on screen.
-function measureRanges(): RangeMap {
-  const doc = document.documentElement;
-  const viewportHeight = window.innerHeight;
-  const maxScroll = Math.max(1, doc.scrollHeight - viewportHeight);
-  const ranges: RangeMap = {};
-
-  for (const span of traceSpans) {
-    const el = document.getElementById(span.id);
-    if (!el) {
-      ranges[span.id] = span.range;
-      continue;
-    }
-    const top = el.getBoundingClientRect().top + window.scrollY;
-    const bottom = top + el.offsetHeight;
-    const startPx = Math.min(Math.max(top - viewportHeight, 0), maxScroll);
-    const endPx = Math.min(Math.max(bottom, 0), maxScroll);
-    ranges[span.id] = [startPx / maxScroll, Math.max(endPx / maxScroll, startPx / maxScroll + 0.001)];
-  }
-
-  return ranges;
-}
-
-function useMeasuredRanges(): RangeMap {
-  const [ranges, setRanges] = useState<RangeMap>(defaultRanges);
-
-  useEffect(() => {
-    const recalc = () => setRanges(measureRanges());
-    recalc();
-    const settle = window.setTimeout(recalc, 200);
-
-    let resizeTimer: number;
-    const onResize = () => {
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(recalc, 150);
-    };
-    window.addEventListener("resize", onResize);
-    window.addEventListener("load", recalc);
-
-    return () => {
-      window.clearTimeout(settle);
-      window.clearTimeout(resizeTimer);
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("load", recalc);
-    };
-  }, []);
-
-  return ranges;
-}
 
 function groupSpans(spans: TraceSpan[]): TraceSpan[][] {
   const seen = new Set<string>();
@@ -95,18 +32,26 @@ function groupSpans(spans: TraceSpan[]): TraceSpan[][] {
   return rows;
 }
 
+function findActiveSpan(progress: number) {
+  return (
+    traceSpans.find(
+      (span) => progress >= span.range[0] && progress <= span.range[1]
+    ) ?? traceSpans[traceSpans.length - 1]
+  );
+}
+
 function SpanRow({
   progress,
   span,
-  range,
   nested,
+  active,
 }: {
   progress: MotionValue<number>;
   span: TraceSpan;
-  range: [number, number];
   nested?: boolean;
+  active: boolean;
 }) {
-  const [start, end] = range;
+  const [start, end] = span.range;
   const width = useTransform(progress, [start, end], ["0%", "100%"]);
   const barOpacity = useTransform(
     progress,
@@ -120,22 +65,27 @@ function SpanRow({
   );
 
   return (
-    <div className={nested ? "border-border/60 border-l pl-3" : ""}>
-      <div className="flex items-center justify-between gap-2 text-[11px] text-fg-muted">
-        <span className="truncate">{span.service}</span>
+    <div
+      className={`trace-row ${nested ? "trace-row--nested" : ""} ${
+        active ? "trace-row--active" : ""
+      }`}
+    >
+      <div className="trace-row__meta">
+        <span className="trace-row__service">{span.service}</span>
         <motion.span
           style={{ opacity: attrOpacity }}
-          className="whitespace-nowrap text-accent"
+          className="trace-row__attr"
         >
           {span.attr}
         </motion.span>
       </div>
-      <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-border/70">
+      <div className="trace-row__bar">
         <motion.div
           style={{ width, opacity: barOpacity }}
-          className="h-full rounded-full bg-accent"
+          className="trace-row__fill"
         />
       </div>
+      <div className="trace-row__label">{span.label}</div>
     </div>
   );
 }
@@ -143,47 +93,70 @@ function SpanRow({
 export default function TracePanel() {
   const { scrollYProgress } = useScroll();
   const [elapsed, setElapsed] = useState("0.00s");
+  const [progress, setProgress] = useState(0);
   const [done, setDone] = useState(false);
-  const mounted = useSyncExternalStore(
-    emptySubscribe,
-    clientSnapshot,
-    serverSnapshot
-  );
-  const ranges = useMeasuredRanges();
+  const totalProgress = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    setProgress(latest);
     setElapsed(`${(latest * 2.4).toFixed(2)}s`);
     setDone(latest >= 0.985);
   });
 
-  const rows = groupSpans(traceSpans);
-
-  if (!mounted) return null;
+  const rows = useMemo(() => groupSpans(traceSpans), []);
+  const activeSpan = findActiveSpan(progress);
+  const completedCount = traceSpans.filter(
+    (span) => progress > span.range[1]
+  ).length;
 
   return (
     <aside
       aria-hidden="true"
-      className="fixed top-1/2 right-6 z-40 hidden w-72 -translate-y-1/2 flex-col gap-3 rounded-lg border border-border bg-bg-elevated/90 p-4 font-mono shadow-2xl shadow-black/40 backdrop-blur-sm lg:flex"
+      className="trace-panel"
     >
-      <div className="flex items-center justify-between border-b border-border pb-2">
-        <div className="flex items-center gap-2">
+      <div className="trace-panel__header">
+        <div>
+          <span className="trace-panel__kicker">LIVE REQUEST TRACE</span>
+          <strong>nebiyu.dev</strong>
+        </div>
+        <div className="trace-panel__clock">
           <motion.span
-            className="h-1.5 w-1.5 rounded-full bg-accent"
+            className="trace-panel__pulse"
             animate={{ opacity: [1, 0.35, 1] }}
             transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
           />
-          <span className="text-[11px] tracking-wide text-fg-muted">
-            TRACE nebiyu.dev
-          </span>
+          <span>{elapsed}</span>
         </div>
-        <span className="text-[11px] text-fg-muted">{elapsed}</span>
       </div>
 
-      <div className="flex max-h-[55vh] flex-col gap-2.5 overflow-hidden">
+      <div className="trace-panel__summary">
+        <div>
+          <span>active span</span>
+          <strong>{activeSpan.service}</strong>
+        </div>
+        <div>
+          <span>completed</span>
+          <strong>
+            {completedCount}/{traceSpans.length}
+          </strong>
+        </div>
+        <div>
+          <span>status</span>
+          <strong className={done ? "text-accent" : ""}>
+            {done ? "200 OK" : "streaming"}
+          </strong>
+        </div>
+      </div>
+
+      <div className="trace-panel__global">
+        <motion.div style={{ width: totalProgress }} />
+      </div>
+
+      <div className="trace-panel__rows">
         {rows.map((row, i) =>
           row.length > 1 ? (
-            <div key={i} className="flex flex-col gap-2">
-              <span className="text-[10px] tracking-wider text-fg-muted/70 uppercase">
+            <div key={i} className="trace-fanout">
+              <span className="trace-fanout__label">
                 fan-out · parallel
               </span>
               {row.map((span) => (
@@ -191,8 +164,8 @@ export default function TracePanel() {
                   key={span.id}
                   progress={scrollYProgress}
                   span={span}
-                  range={ranges[span.id] ?? span.range}
                   nested
+                  active={activeSpan.id === span.id}
                 />
               ))}
             </div>
@@ -201,17 +174,15 @@ export default function TracePanel() {
               key={row[0].id}
               progress={scrollYProgress}
               span={row[0]}
-              range={ranges[row[0].id] ?? row[0].range}
+              active={activeSpan.id === row[0].id}
             />
           )
         )}
       </div>
 
-      <div className="flex items-center justify-between border-t border-border pt-2 text-[11px]">
-        <span className="text-fg-muted">root: GET /</span>
-        <span className={done ? "text-accent" : "text-fg-muted"}>
-          {done ? "200 OK" : "…"}
-        </span>
+      <div className="trace-panel__footer">
+        <span>root: GET /</span>
+        <span>{activeSpan.label}</span>
       </div>
     </aside>
   );
