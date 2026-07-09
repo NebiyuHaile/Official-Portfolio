@@ -18,6 +18,70 @@ export const proofPoints = [
   { value: "30%", label: "faster ticket resolution" },
 ];
 
+export type SystemNode = {
+  id: string;
+  label: string;
+  route: string;
+  metric: string;
+  detail: string;
+  x: number;
+  y: number;
+  tone: "green" | "blue" | "amber";
+};
+
+export const systemNodes: SystemNode[] = [
+  {
+    id: "identity",
+    label: "Identity",
+    route: "auth.middleware",
+    metric: "RBAC x5",
+    detail: "JWT/Clerk auth, role gates, and audit-minded access control for Senate-sync.",
+    x: 16,
+    y: 28,
+    tone: "blue",
+  },
+  {
+    id: "realtime",
+    label: "Realtime State",
+    route: "senate-sync.websocket",
+    metric: "500+ users",
+    detail: "Pusher-backed vote tallying with append-only records and real users in the loop.",
+    x: 42,
+    y: 18,
+    tone: "green",
+  },
+  {
+    id: "routing",
+    label: "AI Routing",
+    route: "routealpha.router",
+    metric: "p95 + spend",
+    detail: "Classifies prompts, routes LLM calls, and exposes telemetry for latency and cost.",
+    x: 72,
+    y: 32,
+    tone: "amber",
+  },
+  {
+    id: "database",
+    label: "Database Safety",
+    route: "emdc.transaction",
+    metric: "guarded writes",
+    detail: "Transaction guards protect live debate leaderboards from concurrent write corruption.",
+    x: 28,
+    y: 70,
+    tone: "amber",
+  },
+  {
+    id: "research",
+    label: "Research Pipeline",
+    route: "research.etl",
+    metric: "91% accuracy",
+    detail: "Medical-image ETL and transfer-learning pipeline for IEEE-published SLE research.",
+    x: 62,
+    y: 76,
+    tone: "blue",
+  },
+];
+
 export const nav = [
   { id: "about", label: "about" },
   { id: "experience", label: "experience" },
