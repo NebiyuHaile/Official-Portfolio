@@ -390,10 +390,10 @@ section[id] {
 .trace-panel {
   position: fixed;
   top: 50%;
-  right: 1.25rem;
+  right: 1rem;
   z-index: 40;
   display: none;
-  width: min(24rem, calc(100vw - 2rem));
+  width: min(20rem, calc(100vw - 2rem));
   max-height: calc(100vh - 5rem);
   transform: translateY(-50%);
   overflow: hidden;
@@ -859,7 +859,7 @@ section[id] {
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1536px) {
   .trace-panel {
     display: block;
   }

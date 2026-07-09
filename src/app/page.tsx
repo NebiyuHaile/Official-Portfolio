@@ -15,7 +15,7 @@ export default function Home() {
       <div aria-hidden className="star-field" />
       <Nav />
       <TracePanel />
-      <div className="relative z-10 xl:pr-[27rem]">
+      <div className="relative z-10 2xl:pr-[22rem]">
         <Hero />
         <TraceManifest />
         <About />
